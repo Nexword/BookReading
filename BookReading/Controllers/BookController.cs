@@ -16,6 +16,7 @@ namespace BookReading.Controllers
 		
 		public ActionResult Details(int id = 0)
 		{
+			ViewBag.Title = "Подробнее о книге";
 			var book = BookContext.Instance.Books.FirstOrDefault(x => x.Id == id);
 			
 			if (book == null)

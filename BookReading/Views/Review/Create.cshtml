@@ -1,15 +1,15 @@
 ﻿@model BookReading.Models.Review
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Создать отзыв";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Create</h2>
+<h2>Создать отзыв</h2>
 
 @using (Html.BeginForm()) {
     <fieldset>
-        <legend>Review</legend>
+        
 		
 	    <div class="editor-field">
 		    @Html.HiddenFor(model => model.BookId)
@@ -19,7 +19,7 @@
             @Html.LabelFor(model => model.Text)
         </div>
         <div class="editor-field">
-            @Html.TextBoxFor(model => model.Text)
+            @Html.TextAreaFor(model => model.Text, new{maxlength = 5000})
 			@Html.ValidationMessageFor(model => model.Text)
         </div>
 
