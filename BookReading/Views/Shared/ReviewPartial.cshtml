@@ -1,0 +1,18 @@
+﻿@model List<BookReading.Models.Review>
+
+
+@foreach (var review in Model)
+{
+	<p>
+		<b>@Html.DisplayNameFor(m => review.AuthorId) </b>
+		<br/>
+		@Html.DisplayFor(m => review.AuthorId)
+	</p>   
+	
+	<p>
+		<b>@Html.DisplayNameFor(m => review.Text) </b>
+		<br/>
+		@Html.DisplayFor(m => review.Text)
+	</p>
+}
+
