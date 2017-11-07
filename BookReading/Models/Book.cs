@@ -9,7 +9,12 @@ namespace BookReading.Models
 {
 	public class Book
 	{
-		public int Id { get; set; }
+	    public Book()
+	    {
+            Reviews = new List<Review>();
+	    }
+
+	    public int Id { get; set; }
 
 		[Display(Name = "Название")]
 		public string Title { get; set; }
@@ -31,5 +36,6 @@ namespace BookReading.Models
 			Genre = newBookData.Genre;
 		}
 
+        public List<Review> Reviews { get; }
 	}
 }

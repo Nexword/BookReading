@@ -9,12 +9,24 @@ namespace BookReading.Controllers
 {
     public class ReviewController : Controller
     {
+        private IBookContext _bookContext;
+
+        public ReviewController() : this(BookContext.Instance)
+        {
+        }
+
+        public ReviewController(IBookContext bookContext)
+        {
+            if (bookContext == null)
+                throw new ArgumentNullException();
+            _bookContext = bookContext;
+        }
         //
         // GET: /Review/
 
         public ActionResult Create(int bookId)
         {
-	        if (BookContext.Instance.Books.All(x => x.Id != bookId))
+	        if (_bookContext.GetBook(bookId) == null)
 		        return HttpNotFound();
 			
 			var review = new Review(){BookId = bookId};

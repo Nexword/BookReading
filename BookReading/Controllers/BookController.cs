@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Web.Mvc;
 using BookReading.Models;
 
@@ -6,18 +7,31 @@ namespace BookReading.Controllers
 {
     public class BookController : Controller
     {
+        private IBookContext _bookContext;
+
+        public BookController() : this(BookContext.Instance)
+        {
+        }
+
+        public BookController(IBookContext bookContext)
+        {
+            if (bookContext == null)
+                throw new ArgumentNullException();
+            _bookContext = bookContext;
+        }
+
         //
         // GET: /Book/
 
         public ActionResult List()
         {
-            return View(BookContext.Instance.Books);
+            return View(_bookContext.GetAll());
         }    
 		
 		public ActionResult Details(int id = 0)
 		{
 			ViewBag.Title = "Подробнее о книге";
-			var book = BookContext.Instance.Books.FirstOrDefault(x => x.Id == id);
+			var book = _bookContext.GetBook(id);
 			
 			if (book == null)
 				return HttpNotFound();
@@ -27,7 +41,7 @@ namespace BookReading.Controllers
 		
 	    public ActionResult Edit(int id = 0)
 	    {
-			var book = BookContext.Instance.Books.FirstOrDefault(x => x.Id == id);
+			var book = _bookContext.GetBook(id);
 
 		    if (book == null)
 			    return HttpNotFound();
@@ -38,20 +52,12 @@ namespace BookReading.Controllers
 		[HttpPost]
 	    public ActionResult Edit(Book editBook)
 		{
-			Book first = null;
-			foreach (var x in BookContext.Instance.Books)
-			{
-				if (x.Id == editBook.Id)
-				{
-					first = x;
-					break;
-				}
-			}
+			Book first = _bookContext.GetBook(editBook.Id);
 
-			if (first == null)
+            if (first == null)
 				return HttpNotFound();
 			
-			first.Update(editBook);
+			_bookContext.Update(editBook);
 
 			return View(editBook);
 		}

@@ -2,32 +2,38 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using LinqToDB;
+using LinqToDB.Data;
 
 namespace BookReading.Models
 {
-	public class BookContext
-	{
-		private static readonly BookContext _intstance = new BookContext();
+	public class BookContext : IBookContext
+    {
+		private static readonly BookContext _instance = new BookContext();
 
-		public static BookContext Instance
+		public static IBookContext Instance
 		{
-			get { return _intstance; }
+			get { return _instance; }
 		}
 
+		private List<Book> Books = new List<Book>();
 
-//		public IEnumerable<Book> Books
-//		{
-//			get { return _books; }
-//		}
-//
-//		public IEnumerable<Review> Reviews
-//		{
-//			get { return _reviews; }
-//		}
+		private List<Review> Reviews = new List<Review>();
 
-		public List<Book> Books = new List<Book>();
+	    public Book GetBook(int bookId)
+	    {
+	        return Books.FirstOrDefault(x => x.Id == bookId);
+	    }
 
-		public List<Review> Reviews = new List<Review>();
+	    public Book Update(Book newBookData)
+	    {
+	        throw new NotImplementedException();
+	    }
+
+        public List<Book> GetAll()
+	    {
+	        return Books;
+	    }
 
 		public void AddBook(Book newBook)
 		{
@@ -82,7 +88,6 @@ namespace BookReading.Models
 			Reviews.Add(review);
 			_bookId = 1;
 			_reviewId = 1;
-
 		}
 	}
 }

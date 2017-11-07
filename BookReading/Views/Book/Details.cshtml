@@ -51,4 +51,4 @@
 	@Html.ActionLink("Добавить отзыв", "Create", "Review", new { bookId = Model.Id }, null)
 </p>	   
 
-@Html.Partial("ReviewPartial", BookContext.Instance.Reviews.Where(x=>x.BookId == Model.Id).ToList())
+@Html.Partial("ReviewPartial", Model.Reviews)
