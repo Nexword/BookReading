@@ -1,5 +1,7 @@
-BookReading/obj/
-BookReading.Tests/obj/
-BookReading/bin/
-packages/
-BookReading.Tests/bin/
+**/.vs
+*.suo
+*.user
+bin
+obj
+packages
+*.cache
