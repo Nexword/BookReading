@@ -31,7 +31,8 @@ namespace BookReading.Models
                 return null;
             throw new System.NotImplementedException();
 
-            book.Update(book);
+            book.Update(newBookData);
+	        return book;
         }
     }
 }
