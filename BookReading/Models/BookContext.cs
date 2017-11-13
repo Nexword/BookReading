@@ -16,37 +16,49 @@ namespace BookReading.Models
 			get { return _instance; }
 		}
 
-		private List<Book> Books = new List<Book>();
+		private readonly List<Book> _books = new List<Book>();
 
-		private List<Review> Reviews = new List<Review>();
+		private readonly List<Review> _reviews = new List<Review>();
 
 	    public Book GetBook(int bookId)
 	    {
-	        return Books.FirstOrDefault(x => x.Id == bookId);
+		    var book = _books.SingleOrDefault(x => x.Id == bookId);
+		    if (book == null)
+			    return null;
+
+			// clear to avoid duplicates, because we hold this book in _books
+		    book.Reviews.Clear();
+
+			book.Reviews.AddRange(_reviews.Where(x => x.BookId == bookId));
+		    return book;
 	    }
 
 	    public Book Update(Book newBookData)
 	    {
-	        throw new NotImplementedException();
+		    if (newBookData == null) throw new ArgumentNullException(nameof(newBookData));
+		    var book = _books.Single(x => x.Id == newBookData.Id);
+
+			book.Update(newBookData);
+			return book;
 	    }
 
         public List<Book> GetAll()
 	    {
-	        return Books;
+	        return _books;
 	    }
 
 		public void AddBook(Book newBook)
 		{
 			_bookId++;
 			newBook.Id = _bookId;
-			Books.Add(newBook);
+			_books.Add(newBook);
 		}
 
 		public void AddReview(Review newReview)
 		{
 			_reviewId++;
 			newReview.Id = _reviewId;
-			Reviews.Add(newReview);
+			_reviews.Add(newReview);
 		}
 
 		private static int _bookId;
@@ -75,7 +87,7 @@ namespace BookReading.Models
 				Title = "It2"
 			};
 
-			Books.AddRange(new List<Book>(){book,book1});
+			_books.AddRange(new List<Book>(){book,book1});
 
 			Review review = new Review()
 			{
@@ -85,7 +97,7 @@ namespace BookReading.Models
 				Text = "Good choice!"
 			};
 
-			Reviews.Add(review);
+			_reviews.Add(review);
 			_bookId = 1;
 			_reviewId = 1;
 		}
