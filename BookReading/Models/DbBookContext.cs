@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using LinqToDB;
+using LinqToDB.Data;
 
 namespace BookReading.Models
 {
@@ -6,7 +10,11 @@ namespace BookReading.Models
     {
         public void AddBook(Book newBook)
         {
-            throw new System.NotImplementedException();
+            using (var db = new Database())
+            {
+                db.Insert(newBook);
+                // db.InsertWithIdentity()
+            }
         }
 
         public void AddReview(Review newReview)
@@ -16,23 +24,48 @@ namespace BookReading.Models
 
         public List<Book> GetAll()
         {
-            throw new System.NotImplementedException();
+            using (var db = new Database())
+            {
+                return db.Books.ToList();
+            }
         }
 
         public Book GetBook(int bookId)
         {
-            throw new System.NotImplementedException();
+            using (var db = new Database())
+            {
+                return db.Books.SingleOrDefault(x => x.Id == bookId);
+            }
         }
 
         public Book Update(Book newBookData)
         {
-            var book = GetBook(newBookData.Id);
-            if (book == null)
-                return null;
-            throw new System.NotImplementedException();
+            if (newBookData == null)
+                throw new ArgumentNullException(nameof(newBookData));
 
-            book.Update(newBookData);
-	        return book;
+            using (var db = new Database())
+            {
+                var book =
+                    db.Books.SingleOrDefault(x => x.Id == newBookData.Id);
+
+                if (book == null)
+                    return null;
+
+                db.Update(newBookData);
+
+                book.Update(newBookData);
+                return book;
+            }
+
+        }
+
+        private class Database : DataConnection
+        {
+            public Database() : base("Main")
+            {
+            }
+
+            public ITable<Book> Books { get { return GetTable<Book>(); } }
         }
     }
 }

@@ -9,7 +9,8 @@ namespace BookReading.Controllers
     {
         private IBookContext _bookContext;
 
-        public BookController() : this(BookContext.Instance)
+        // public BookController() : this(BookContext.Instance)
+        public BookController() : this(new DbBookContext())
         {
         }
 

@@ -4,9 +4,11 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Razor;
+using LinqToDB.Mapping;
 
 namespace BookReading.Models
 {
+    [Table]
 	public class Book
 	{
 	    public Book()
@@ -14,18 +16,23 @@ namespace BookReading.Models
             Reviews = new List<Review>();
 	    }
 
+        [PrimaryKey, Identity]
 	    public int Id { get; set; }
 
-		[Display(Name = "Название")]
+		[Display(Name = "Название"), Column]
 		public string Title { get; set; }
 
+        [Column]
 		public string Description { get; set; }
 
-		public string Author { get; set; }
+	    [Column]
+        public string Author { get; set; }
 
-		public int Pages { get; set; }
+	    [Column]
+        public int Pages { get; set; }
 
-		public string Genre { get; set; }
+	    [Column]
+        public string Genre { get; set; }
 
 		public void Update(Book newBookData)
 		{
